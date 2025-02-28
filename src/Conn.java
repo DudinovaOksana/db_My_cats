@@ -22,10 +22,20 @@ public class Conn {
     public void createDB() throws ClassNotFoundException, SQLException
     {
         statmt = connection.createStatement();
-        statmt.execute("CREATE TABLE if not exists 'types' ('id' INTEGER PRIMARY KEY UNIQUE, 'type' VARCHAR(100) not null);");
+        statmt.execute("CREATE TABLE if not exists 'types' ('id' INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE, 'type' VARCHAR(100) not null);");
 
         System.out.println("Таблица создана или уже существует.");
     }
+    // --------Заполнение таблицы--------
+    public void insert_type(String type) throws SQLException
+    {
+        String insertCat = String.format("INSERT INTO 'types' ('type') VALUES ('%s'); ", type);
+        statmt.execute(insertCat);
+
+        System.out.println("Таблица заполнена");
+    }
+
+
     // -------- Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {
@@ -48,7 +58,6 @@ public class Conn {
     {
         this.connection.close();
         this.statmt.close();
-        this.resSet.close();
 
         System.out.println("Соединения закрыты");
     }
