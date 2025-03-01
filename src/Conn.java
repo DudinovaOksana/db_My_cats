@@ -14,8 +14,6 @@ public class Conn {
         connection = null;
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection(dbAddress);
-
-
         System.out.println("База Подключена!");
     }
     // --------Создание таблицы--------
@@ -23,24 +21,19 @@ public class Conn {
     {
         statmt = connection.createStatement();
         statmt.execute("CREATE TABLE if not exists 'types' ('id' INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE, 'type' VARCHAR(100) not null);");
-
         System.out.println("Таблица создана или уже существует.");
     }
     // --------Заполнение таблицы--------
-    public void insert_type(String type) throws SQLException
+    public void insertType(String type) throws SQLException
     {
         String insertCat = String.format("INSERT INTO 'types' ('type') VALUES ('%s'); ", type);
         statmt.execute(insertCat);
-
         System.out.println("Таблица заполнена");
     }
-
-
     // -------- Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {
         resSet = statmt.executeQuery("SELECT * FROM users");
-
         while(resSet.next())
         {
             int id = resSet.getInt("id");
@@ -62,6 +55,5 @@ public class Conn {
         System.out.println("Соединения закрыты");
     }
 
-    public static void writeDB() {
-    }
+
 }
