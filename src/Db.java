@@ -10,7 +10,8 @@ public class Db {
         for (String type : Const.TYPES){
             conn.insertType(type);
         }
-        conn.update_type(1,"Сибирская голубая");
+        conn.update_type(5,"Сибирская двухцветная");
+        conn.delete_type(6);
         conn.closeDB();
 
     }
