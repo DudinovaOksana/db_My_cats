@@ -30,6 +30,13 @@ public class Conn {
         statmt.execute(insertCat);
         System.out.println("Таблица заполнена");
     }
+    // --------Изменение таблицы--------
+    public void update_type(int id, String type) throws SQLException
+    {
+        String updateType = String.format("UPDATE types SET type = ('%s') where id =('%d');",type,id);
+        statmt.execute(updateType);
+        System.out.println("Запись с id = "+id+" обновлена");
+    }
     // -------- Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {
