@@ -37,7 +37,7 @@ public class Conn {
         statmt.execute(updateType);
         System.out.println("Запись с id = "+id+" обновлена");
     }
-    // --------Удаление таблицы--------
+    // --------Удаление записи в таблице--------
     public void delete_type(int id) throws SQLException{
         String deleteType = String.format("DELETE FROM types WHERE Id = ('%d');",id);
         statmt.execute(deleteType);
