@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class Conn1 {
     private Connection connection;
@@ -20,21 +21,49 @@ public class Conn1 {
     public void createDB() throws ClassNotFoundException, SQLException
     {
         statmt = connection.createStatement();
-        statmt.execute("CREATE TABLE if not exists 'cats' ('id' INTEGER PRIMARY KEY UNIQUE not null, " +
-                "'name' VARCHAR(20) not null, 'type_id' INTEGER not null, 'age' INTEGER not null, " +
-                "'weight' DOUBLE not null, FOREIGN KEY (type_id) REFERENCES types(id));");
+        String sql = "CREATE TABLE if not exists cats (id INTEGER PRIMARY KEY," +
+                "name VARCHAR(20) not null, type_id INTEGER not null, age INTEGER not null, " +
+                "weight DOUBLE not null, FOREIGN KEY (type_id) REFERENCES types(id));";
+        statmt.execute(sql);
         System.out.println("Таблица создана или уже существует.");
     }
-    // -------- Вывод таблицы--------
+    // --------Добавить кошку--------
+    public int findCatByType (String type) throws SQLException {
+        //найти typeId
+        boolean result = statmt.execute(String.format("select id from types where type='%s'",type));
+        if (result) {
+            ResultSet resultSet = statmt.getResultSet();
+            return resultSet.getInt("id"); //вернуть typeId
+        } else {
+            //Создать typeid, type для новой кошки
+            ResultSet resultSet = statmt.getResultSet();
+            statmt.execute("insert into types values %d");
+            return resultSet.getInt("select id from types where type='type'"); //вернуть typeId НОВЫЙ
+        }
+    }
+    public void insertCat(String name, String type, int age, Double weight) throws SQLException {
+        int typeId = findCatByType(type);
+        String insertCat = String.format(Locale.US, "INSERT INTO 'cats' VALUES (null, '%s', %d, %d, %.1f)", name,typeId,age,weight);
+        statmt.execute(insertCat);
+        System.out.println("Котик добавлен");
+    }
+
+    // --------Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {
         resSet = statmt.executeQuery("SELECT * FROM cats");
         while(resSet.next())
         {
             int id = resSet.getInt("id");
-            String  type = resSet.getString("type");
+            String  name = resSet.getString("name");
+            int  type_id = resSet.getInt("type_id");
+            int age = resSet.getInt("age");
+            double weight = resSet.getDouble("weight");
             System.out.println( "ID = " + id );
-            System.out.println( "type = " + type );
+            System.out.println( "name = " + name );
+            System.out.println( "type_id = " + type_id );
+            System.out.println( "age = " + age );
+            System.out.println( "weight = " + weight);
             System.out.println();
         }
         System.out.println("Таблица выведена");

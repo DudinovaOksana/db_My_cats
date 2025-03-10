@@ -26,7 +26,7 @@ public class Conn {
     // --------Заполнение таблицы--------
     public void insertType(String type) throws SQLException
     {
-        String insertCat = String.format("INSERT INTO 'types' ('type') VALUES %s ", type);
+        String insertCat = String.format("INSERT INTO 'types'  VALUES %s ", type);
         statmt.execute(insertCat);
         System.out.println("Таблица заполнена");
     }
