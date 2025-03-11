@@ -24,30 +24,30 @@ public class Conn1 {
         String sql = "CREATE TABLE if not exists cats (id INTEGER PRIMARY KEY," +
                 "name VARCHAR(20) not null, type_id INTEGER not null, age INTEGER not null, " +
                 "weight DOUBLE not null, FOREIGN KEY (type_id) REFERENCES types(id));";
-        statmt.execute(sql);
+        statmt.executeQuery(sql);
         System.out.println("Таблица создана или уже существует.");
     }
     // --------Добавить кошку--------
     public int findCatByType (String type) throws SQLException {
         //найти typeId
-        boolean result = statmt.execute(String.format("select id from types where type='%s'",type));
-        if (result) {
-            ResultSet resultSet = statmt.getResultSet();
-            return resultSet.getInt("id"); //вернуть typeId
-        } else {
+        statmt = connection.createStatement();
+        String select = String.format("select id from types where type='%s'",type);
+        ResultSet resultSet = statmt.executeQuery(select);
+        try  {
+            return resultSet.getInt("id");
+        } catch (SQLException e) {
             //Создать typeid, type для новой кошки
-            ResultSet resultSet = statmt.getResultSet();
-            statmt.execute("insert into types values %d");
-            return resultSet.getInt("select id from types where type='type'"); //вернуть typeId НОВЫЙ
+            statmt.execute(String.format("insert or ignore into types values (null, '%s')",type));
+            statmt.executeQuery(select);
+            return resultSet.getInt("id"); //вернуть typeId НОВЫЙ
         }
     }
     public void insertCat(String name, String type, int age, Double weight) throws SQLException {
         int typeId = findCatByType(type);
-        String insertCat = String.format(Locale.US, "INSERT INTO 'cats' VALUES (null, '%s', %d, %d, %.1f)", name,typeId,age,weight);
+        String insertCat = String.format(Locale.US, "INSERT or ignore INTO cats VALUES (null, '%s', %d, %d, %.1f)", name,typeId,age,weight);
         statmt.execute(insertCat);
         System.out.println("Котик добавлен");
     }
-
     // --------Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {
@@ -68,7 +68,6 @@ public class Conn1 {
         }
         System.out.println("Таблица выведена");
     }
-
     // --------Закрытие--------
     public void closeDB() throws ClassNotFoundException, SQLException
     {
@@ -76,5 +75,4 @@ public class Conn1 {
         this.statmt.close();
         System.out.println("Соединения закрыты");
     }
-
 }
