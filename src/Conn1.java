@@ -24,7 +24,7 @@ public class Conn1 {
         String sql = "CREATE TABLE if not exists cats (id INTEGER PRIMARY KEY," +
                 "name VARCHAR(20) not null, type_id INTEGER not null, age INTEGER not null, " +
                 "weight DOUBLE not null, FOREIGN KEY (type_id) REFERENCES types(id));";
-        statmt.executeQuery(sql);
+        statmt.execute(sql);
         System.out.println("Таблица создана или уже существует.");
     }
     // --------Добавить кошку--------
@@ -97,6 +97,25 @@ public class Conn1 {
         }
         return res;
 
+    }
+    // --------Удаление кота--------
+    public void delete_type(int id) throws SQLException{
+        String deleteType = String.format("DELETE FROM cats WHERE Id = %d",id);
+        statmt.execute(deleteType);
+        System.out.println("Запись с id = "+id+" удалена");
+    }
+    // --------Удаление кота по условию--------
+    public void delete_cat(String where) throws SQLException{
+        String deleteCat = String.format("DELETE FROM cats WHERE %s",where);
+        statmt.execute(deleteCat);
+        System.out.println("Кошки с именем, оканчивающимся на 'а', возраст которых равен"+where+" удалены");
+    }
+    // --------Изменить запись--------
+    public void update_cat(int id, String set, String where) throws SQLException
+    {
+        String updateCat = String.format("UPDATE cats SET %s where id = %d and %s",set,id,where);
+        statmt.execute(updateCat);
+        System.out.println("Запись с id = "+id+" обновлена");
     }
     // --------Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
