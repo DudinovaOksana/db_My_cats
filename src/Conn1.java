@@ -117,6 +117,13 @@ public class Conn1 {
         statmt.execute(updateCat);
         System.out.println("Запись с id = "+id+" обновлена");
     }
+    // --------Возвратить котика по id--------
+    public String get_cat(int id) throws SQLException{
+        String getCat = String.format("Select * from cats where id=%d",id);
+        statmt.execute(getCat);
+        ResultSet resultSet = statmt.getResultSet();
+        return resultSet.getString("name");
+    }
     // --------Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {

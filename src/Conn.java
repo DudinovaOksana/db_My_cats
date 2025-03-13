@@ -91,7 +91,6 @@ public class Conn {
     {
         this.connection.close();
         this.statmt.close();
-
         System.out.println("Соединения закрыты");
     }
 

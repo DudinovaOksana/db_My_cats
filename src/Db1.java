@@ -15,6 +15,10 @@ public class Db1 {
         String set = "age =3";
         conn1.delete_cat(where);
         conn1.update_cat(12,set,where);
+        int id = 12;
+        String name = conn1.get_cat(id);
+        System.out.printf("Кошка с именем %s имеет id =%d",name, id);
+        System.out.println();
         conn1.closeDB();
     }
 }
