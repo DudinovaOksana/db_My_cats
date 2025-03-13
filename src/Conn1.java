@@ -124,6 +124,24 @@ public class Conn1 {
         ResultSet resultSet = statmt.getResultSet();
         return resultSet.getString("name");
     }
+    // --------Вывести котов, которые подходят под запрос where--------
+    public void get_cat_where(String where) throws SQLException{
+        String getCatWhere = String.format("Select * from cats where %s",where);
+        statmt.execute(getCatWhere);
+        ResultSet resultSet = statmt.getResultSet();
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString("name"));
+        }
+    }
+    // --------Вывести всех котов--------
+    public void get_all_cats() throws SQLException{
+        String getAllCats = String.format("Select * from cats");
+        statmt.execute(getAllCats);
+        ResultSet resultSet = statmt.getResultSet();
+        while (resultSet.next()){
+            System.out.println(resultSet.getString("name"));
+        }
+    }
     // --------Вывод таблицы--------
     public void readDB() throws ClassNotFoundException, SQLException
     {

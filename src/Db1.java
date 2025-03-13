@@ -19,6 +19,9 @@ public class Db1 {
         String name = conn1.get_cat(id);
         System.out.printf("Кошка с именем %s имеет id =%d",name, id);
         System.out.println();
+        String where1 = "id < 15";
+        conn1.get_cat_where(where1);
+        conn1.get_all_cats();
         conn1.closeDB();
     }
 }
